@@ -47,7 +47,6 @@ $products = get_conditional_rows('products', $args);
                             <tbody>
                             <?php
                                 if(isset($_SESSION['cart']) && count($_SESSION['cart']) > 0) {
-                                    // dd($_SESSION['cart']);
                                     $cart_total_price = 0;
 
                                     foreach($_SESSION['cart'] as $id => $value) {
@@ -58,7 +57,9 @@ $products = get_conditional_rows('products', $args);
                                         $cart_total_price += $final_price;
                                         ?>
                                         <tr>
-                                            <td class="product-thumbnail"><a href="#"><img src="images/product-2/cart-img/1.jpg" alt="product img" /></a></td>
+                                            <td class="product-thumbnail">
+                                            <a href="#"><?php echo $image != '' ? "<img height='100' src='uploads/products/{$image}' alt='{$name}' >" : ""; ?></a>
+                                            </td>
                                             <td class="product-name"><a href="#"><?php echo $name; ?></a>
                                                 <ul  class="pro__prize">
                                                     <li class="old__prize"><?php echo get_currency() . $price; ?></li>

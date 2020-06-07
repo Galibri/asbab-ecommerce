@@ -304,7 +304,6 @@ function get_default_status() {
 }
 
 function get_single_product_total_price($sp, $price, $qty) {
-    return $price;
     if($sp == '' || $sp == null || $sp == 0) {
         return $price * $qty;
     } else {

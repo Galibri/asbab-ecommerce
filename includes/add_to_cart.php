@@ -22,14 +22,21 @@ class Add_to_cart {
     }
 
     public function totalProducts() {
-        $total = 0;
+        // Show all Products by counging the quantity
+        // $total = 0;
+        // if(isset($_SESSION['cart'])) {
+        //     foreach($_SESSION['cart'] as $product_id) {
+        //         $total += $product_id['quantity'];
+        //     }
+        //     return $total;
+        // }
+        // return 0;
+        
+        // Distinct count
         if(isset($_SESSION['cart'])) {
-            foreach($_SESSION['cart'] as $product_id) {
-                $total += $product_id['quantity'];
-            }
-            return $total;
+            return count($_SESSION['cart']);
         }
-        return 0;
+
     }
 
 }
