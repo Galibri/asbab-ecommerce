@@ -11,9 +11,11 @@ if (isset($_POST['save_category'])) {
          $categoryData = array(
              'name'     => $category_name,
              'slug'     => $slug,
-             'position' => $position,
+             'position' => $position == '' ? 0 : $position,
              'status'   => '1'
          );
+
+        //  dd($categoryData);
         $result = insert_into_database('categories', $categoryData);
 
         if ($result) {

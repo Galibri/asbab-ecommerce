@@ -4078,3 +4078,21 @@ ul.htc__instagram__posts.owl-carousel li img {
     border-left: 2px solid #000;
     padding-left: 15px;
 }
+
+
+.accordion .accordion__normal {
+    background: #f4f4f4;
+    height: 65px;
+    line-height: 65px;
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+    position: relative;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-family: "Poppins";
+    cursor: pointer;
+}

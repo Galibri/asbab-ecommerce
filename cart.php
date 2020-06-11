@@ -1,14 +1,17 @@
 <?php require_once('./includes/header.php'); ?>
 <?php
+if(!isset($_SESSION['cart']) || count($_SESSION['cart']) == 0) {
+    redirect(get_shop_page_url());
+}
+
 $args = array(
     'limit' => 4,
 );
 $products = get_conditional_rows('products', $args);
 
-// dd($_SESSION['cart']);
-
 ?>
-<div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, .10) url(uploads/theme/breadcrumb.jpg) no-repeat scroll center center / cover ;">
+<div class="ht__bradcaump__area"
+    style="background: rgba(0, 0, 0, .10) url(uploads/theme/breadcrumb.jpg) no-repeat scroll center center / cover ;">
     <div class="ht__bradcaump__wrap">
         <div class="container">
             <div class="row">
@@ -31,7 +34,7 @@ $products = get_conditional_rows('products', $args);
     <div class="container">
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
-                <form action="#">               
+                <form action="#">
                     <div class="table-content table-responsive">
                         <table>
                             <thead>
@@ -45,7 +48,7 @@ $products = get_conditional_rows('products', $args);
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php
+                                <?php
                                 if(isset($_SESSION['cart']) && count($_SESSION['cart']) > 0) {
                                     $cart_total_price = 0;
 
@@ -56,50 +59,41 @@ $products = get_conditional_rows('products', $args);
                                         $final_price = get_single_product_total_price($selling_price, $price, $value['quantity']);
                                         $cart_total_price += $final_price;
                                         ?>
-                                        <tr>
-                                            <td class="product-thumbnail">
-                                            <a href="#"><?php echo $image != '' ? "<img height='100' src='uploads/products/{$image}' alt='{$name}' >" : ""; ?></a>
-                                            </td>
-                                            <td class="product-name"><a href="#"><?php echo $name; ?></a>
-                                                <ul  class="pro__prize">
-                                                    <li class="old__prize"><?php echo get_currency() . $price; ?></li>
-                                                    <?php echo $selling_price != 0 ? "<li>" . get_currency() . $selling_price . "</li>" : ""; ?>
-                                                </ul>
-                                            </td>
-                                            <td class="product-price"><span class="amount"><?php echo get_selling_price($selling_price, $price); ?></span></td>
-                                            <td class="product-quantity"><input type="number" id="quantity-<?php echo $id; ?>" value="<?php echo $value['quantity']; ?>" /><br><a href="javascript:void(0)" onclick="manageCart(<?php echo $id; ?>, 'update')">update</a></td>
-                                            <td class="product-subtotal"><?php echo get_currency() . $final_price;?></td>
-                                            <td class="product-remove"><a href="javascript:void(0)" onclick="manageCart(<?php echo $id; ?>, 'remove')"><i class="icon-trash icons"></i></a></td>
-                                        </tr>
+                                <tr>
+                                    <td class="product-thumbnail">
+                                        <a
+                                            href="product.php?id=<?php echo $id; ?>"><?php echo $image != '' ? "<img height='100' src='uploads/products/{$image}' alt='{$name}' >" : ""; ?></a>
+                                    </td>
+                                    <td class="product-name"><a href="#"><?php echo $name; ?></a>
+                                        <ul class="pro__prize">
+                                            <li class="old__prize"><?php echo get_currency() . $price; ?></li>
+                                            <?php echo $selling_price != 0 ? "<li>" . get_currency() . $selling_price . "</li>" : ""; ?>
+                                        </ul>
+                                    </td>
+                                    <td class="product-price"><span
+                                            class="amount"><?php echo get_currency() . get_selling_price($selling_price, $price); ?></span>
+                                    </td>
+                                    <td class="product-quantity"><input type="number" id="quantity-<?php echo $id; ?>"
+                                            value="<?php echo $value['quantity']; ?>" /><br><a href="javascript:void(0)"
+                                            onclick="manageCart(<?php echo $id; ?>, 'update')">update</a></td>
+                                    <td class="product-subtotal"><?php echo get_currency() . $final_price;?></td>
+                                    <td class="product-remove"><a href="javascript:void(0)"
+                                            onclick="manageCart(<?php echo $id; ?>, 'remove')"><i
+                                                class="icon-trash icons"></i></a></td>
+                                </tr>
 
-                                        <?php
+                                <?php
                                     }
                                 }
-                            ?>    
+                            ?>
                             </tbody>
                         </table>
                     </div>
                     <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-6 col-sm-12 col-xs-12">
                             <div class="buttons-cart--inner">
                                 <div class="buttons-cart">
                                     <a href="<?php echo get_shop_page_url(); ?>">Continue Shopping</a>
-                                </div>
-                                <div class="buttons-cart checkout--btn">
-                                    <a href="<?php echo get_checkout_page_url(); ?>">checkout</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-sm-12 col-xs-12">
-                            <div class="ht__coupon__code">
-                                <span>enter your discount code</span>
-                                <div class="coupon__box">
-                                    <input type="text" placeholder="">
-                                    <div class="ht__cp__btn">
-                                        <a href="#">enter</a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -109,27 +103,19 @@ $products = get_conditional_rows('products', $args);
                                 <div class="cart__desk__list">
                                     <ul class="cart__desc">
                                         <li>cart total</li>
-                                        <li>tax</li>
-                                        <li>shipping</li>
                                     </ul>
                                     <ul class="cart__price">
                                         <li><?php echo get_currency() . $cart_total_price; ?></li>
-                                        <li>$9.00</li>
-                                        <li>0</li>
                                     </ul>
                                 </div>
-                                <div class="cart__total">
-                                    <span>order total</span>
-                                    <span>$918.00</span>
-                                </div>
                                 <ul class="payment__btn">
-                                    <li class="active"><a href="#">payment</a></li>
-                                    <li><a href="#">continue shopping</a></li>
+                                    <li class="active"><a href="<?php echo get_checkout_page_url(); ?>">checkout</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                </form> 
+                </form>
             </div>
         </div>
     </div>

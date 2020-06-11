@@ -33,7 +33,7 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] != 'admin') {
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="<?php echo (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/'; ?>" target="_blank" class="nav-link">Home</a>
+                    <a href="<?php echo (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/' . WEBSITE_URL_SUFFIX; ?>" target="_blank" class="nav-link">Home</a>
                 </li>
             </ul>
 

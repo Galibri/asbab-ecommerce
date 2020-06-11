@@ -14,7 +14,7 @@ function manageCart(id, type) {
         data: { quantity: quantity, id: id, type: type },
         success: function(res) {
             if(type == 'update' || type == 'remove') {
-                window.location.href = 'cart.php'
+                window.location.href = window.location.href
             }
             jQuery('.htc__qua').text(res);
         }

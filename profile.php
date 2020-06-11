@@ -1,7 +1,7 @@
 <?php require_once('./includes/header.php'); ?>
 <?php 
 if (!isset($_SESSION['username'])) {
-    header("Location: ../login.php");
+    redirect('login.php');
 }
 $user = get_userinfo_by_username($_SESSION['username']);
 extract($user);

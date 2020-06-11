@@ -135,6 +135,7 @@ function change_status($table, $status, $where) {
 
 function upload_file($name, $limit = 2097152, $format = array('jpg', 'png', 'jpeg', 'gif', 'bmp')) {
     $target_dir = "../uploads/products/";
+    
     $file_name = time() . '_' . rand(100, 999) . '_' . basename($_FILES[$name]["name"]);
     $target_file = $target_dir . $file_name;
     $uploadOk = 1;

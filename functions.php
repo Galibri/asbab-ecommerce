@@ -118,8 +118,8 @@ function get_currency($currency = '$') {
     return $currency;
 }
 
-function site_url() {
-    return (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
+function site_url($suffix = WEBSITE_URL_SUFFIX) {
+    return (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/' . $suffix;
 }
 
 function get_cart_page_url($url = '') {
@@ -317,4 +317,46 @@ function get_selling_price($sp, $price) {
     } else {
         return $sp;
     }
+}
+
+function is_user_logged_in() {
+    if(isset($_SESSION['username'])) {
+        return true;
+    }
+    return false;
+}
+
+function get_user_order_info() {
+    global $conn;
+    $output = array();
+
+    if(isset($_SESSION['username'])) {
+
+        $user_id = get_user_id_by_username($_SESSION['username']);
+
+        $sql = "SELECT * FROM orders WHERE user_id='{$user_id}'";
+        $result = mysqli_query($conn, $sql);
+        if ($result) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $output[] = $row;
+            }
+        }
+    }
+
+    return $output;
+}
+
+function get_user_id_by_username($username) {
+    global $conn;
+    $output = '';
+
+    $sql = "SELECT id FROM users WHERE username='{$username}' LIMIT 1";
+    $result = mysqli_query($conn, $sql);
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+        $output = $row['id'];
+    } else {
+        $output = mysqli_error($conn);
+    }
+    return $output;
 }
