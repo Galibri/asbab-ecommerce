@@ -14,6 +14,7 @@ if(isset($_POST['place_order'])) {
 
     $error = array();
 
+    // Orders table info
     $address_line_1 = sanitize($_POST['address_line_1']);
     $address_line_2 = sanitize($_POST['address_line_2']);
     $city = sanitize($_POST['city']);
@@ -23,12 +24,8 @@ if(isset($_POST['place_order'])) {
     $order_total = (float) $_POST['order_total'];
     $payment_method = sanitize($_POST['payment_method']);
     $payment_status = 'pending';
+    $order_status = 'pending';
 
-    if($payment_method == 'cod') {
-        $order_status = 'pending';
-    } else {
-        $payment_status = 'processing';
-    }
 
     // Users table info
     $first_name = sanitize($_POST['first_name']);
@@ -79,12 +76,31 @@ if(isset($_POST['place_order'])) {
             'last_name' => $last_name,
             'phone' => $phone,
         );
+
         $where = "id={$user['id']}";
         $result2 = update_data_into_database('users', $usersData, $where);
         $result = insert_into_database('orders', $data);
+        $insert_id = mysqli_insert_id($conn);
+
+        foreach($_SESSION['cart'] as $s_key => $s_value) {
+            $product = get_data_by_id('products', $s_key);
+            $product_price = (float) get_selling_price($product['selling_price'], $product['price']);
+            $p_data = array(
+                'order_id' => $insert_id,
+                'product_id' => $s_key,
+                'product_price' => $product_price,
+                'product_qty' => $s_value['quantity'],
+                'total_price' => ($product_price * $s_value['quantity']),
+            );
+            // dd($p_data);
+            $od_result = insert_into_database('order_details', $p_data);
+            if(!$od_result) {
+                dd(mysqli_error($conn));
+            }
+        }
+
 
         if($result && $result2) {
-            $insert_id = mysqli_insert_id($conn);
             $cart->emptyCart();
             redirect('order_confirmation.php?order-id='. $insert_id);
         } else {
