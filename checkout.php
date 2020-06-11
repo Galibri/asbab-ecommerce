@@ -181,7 +181,7 @@ if(isset($_POST['place_order'])) {
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="single-input">
-                                                    <input type="text" placeholder="Street Address Line 1" name="address_line_1" vvalue="<?php echo isset($_POST['address_line_1']) ? $_POST['address_line_1'] : get_value_from_key('address_line_1', $userOrderInfo); ?>">
+                                                    <input type="text" placeholder="Street Address Line 1" name="address_line_1" value="<?php echo isset($_POST['address_line_1']) ? $_POST['address_line_1'] : get_value_from_key('address_line_1', $userOrderInfo); ?>">
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
