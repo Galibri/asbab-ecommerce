@@ -30,13 +30,19 @@ if(isset($_POST['place_order'])) {
         $payment_status = 'processing';
     }
 
-    // dd($addres_line_1);
+    // Users table info
+    $first_name = sanitize($_POST['first_name']);
+    $last_name = sanitize($_POST['last_name']);
+    $phone = sanitize($_POST['phone']);
 
-
-    if($address_line_1 == '') {
+    if(empty($first_name)) {
+        $error['first_name'] = "First name can't be empty";
+    }if(empty($last_name)) {
+        $error['last_name'] = "Last name can't be empty";
+    }
+    if(empty($address_line_1)) {
         $error['address_line_1'] = "Address line 1 can't be empty";
     }
-
     if(empty($city)) {
         $error['city'] = "City can't be empty";
     }
@@ -48,6 +54,10 @@ if(isset($_POST['place_order'])) {
     }
     if(empty($country)) {
         $error['country'] = "Country can't be empty";
+    }
+
+    if($_POST['payment_method'] == null) {
+        $error['payment_method'] = "Please select a payment method";
     }
 
     if(count($error) == 0) {
@@ -64,8 +74,16 @@ if(isset($_POST['place_order'])) {
             'payment_status' => $payment_status,
 
         );
+        $usersData = array(
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'phone' => $phone,
+        );
+        $where = "id={$user['id']}";
+        $result2 = update_data_into_database('users', $usersData, $where);
         $result = insert_into_database('orders', $data);
-        if($result) {
+
+        if($result && $result2) {
             $insert_id = mysqli_insert_id($conn);
             $cart->emptyCart();
             redirect('order_confirmation.php?order-id='. $insert_id);
@@ -166,48 +184,57 @@ if(isset($_POST['place_order'])) {
                                                 <div class="single-input">
                                                     <input type="text" placeholder="First name" name="first_name" value="<?php echo isset($_POST['first_name']) ? $_POST['first_name'] : get_value_from_key('first_name', $user); ?>">
                                                 </div>
+                                                <span class="text-danger"><?php echo get_value_from_key('first_name', $error); ?></span>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="single-input">
                                                     <input type="text" placeholder="Last name" name="last_name" value="<?php echo isset($_POST['last_name']) ? $_POST['last_name'] : get_value_from_key('last_name', $user); ?>">
                                                 </div>
+                                                <span class="text-danger"><?php echo get_value_from_key('last_name', $error); ?></span>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="single-input mt-0">
                                                     <div class="single-input">
                                                         <input type="text" class="form-control" name="country" placeholder="Country" name="country" value="<?php echo isset($_POST['country']) ? $_POST['country'] : get_value_from_key('country', $userOrderInfo); ?>">
                                                     </div>
+                                                <span class="text-danger"><?php echo get_value_from_key('country', $error); ?></span>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="single-input">
                                                     <input type="text" placeholder="Street Address Line 1" name="address_line_1" value="<?php echo isset($_POST['address_line_1']) ? $_POST['address_line_1'] : get_value_from_key('address_line_1', $userOrderInfo); ?>">
                                                 </div>
+                                                <span class="text-danger"><?php echo get_value_from_key('address_line_1', $error); ?></span>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="single-input">
                                                     <input type="text" placeholder="Street Address Line 2" name="address_line_2" value="<?php echo isset($_POST['address_line_2']) ? $_POST['address_line_2'] : get_value_from_key('address_line_2', $userOrderInfo); ?>">
                                                 </div>
+                                                <span class="text-danger"><?php echo get_value_from_key('address_line_2', $error); ?></span>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="single-input">
                                                     <input type="text" placeholder="City" name="city" value="<?php echo isset($_POST['city']) ? $_POST['city'] : get_value_from_key('city', $userOrderInfo); ?>">
                                                 </div>
+                                                <span class="text-danger"><?php echo get_value_from_key('city', $error); ?></span>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="single-input">
                                                     <input type="text" placeholder="State" name="state" value="<?php echo isset($_POST['state']) ? $_POST['state'] : get_value_from_key('state', $userOrderInfo); ?>">
                                                 </div>
+                                                <span class="text-danger"><?php echo get_value_from_key('state', $error); ?></span>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="single-input">
                                                     <input type="text" placeholder="Post code/ zip" name="zip" value="<?php echo isset($_POST['zip']) ? $_POST['zip'] : get_value_from_key('zip', $userOrderInfo); ?>">
                                                 </div>
+                                                <span class="text-danger"><?php echo get_value_from_key('zip', $error); ?></span>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="single-input">
                                                     <input type="text" placeholder="Phone number" name="phone" value="<?php echo isset($_POST['phone']) ? $_POST['phone'] : get_value_from_key('phone', $user); ?>">
                                                 </div>
+                                                <span class="text-danger"><?php echo get_value_from_key('phone', $error); ?></span>
                                             </div>
                                         </div>
                                     </div>
@@ -218,6 +245,7 @@ if(isset($_POST['place_order'])) {
                                 </div>
                                 <div class="accordion__body">
                                     <div class="paymentinfo">
+                                        <span class="text-danger"><?php echo get_value_from_key('payment_method', $error); ?></span>
                                         <div class="form-group">
                                             <label for="cod">
                                                 <input type="radio" name="payment_method" value="cod" id="cod"> COD
