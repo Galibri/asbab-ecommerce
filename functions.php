@@ -334,12 +334,10 @@ function get_user_order_info() {
 
         $user_id = get_user_id_by_username($_SESSION['username']);
 
-        $sql = "SELECT * FROM orders WHERE user_id='{$user_id}'";
+        $sql = "SELECT * FROM orders WHERE user_id='{$user_id}' ORDER BY id DESC LIMIT 1";
         $result = mysqli_query($conn, $sql);
         if ($result) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                $output[] = $row;
-            }
+            $output = mysqli_fetch_assoc($result);
         }
     }
 
@@ -359,4 +357,12 @@ function get_user_id_by_username($username) {
         $output = mysqli_error($conn);
     }
     return $output;
+}
+
+function get_value_from_key($arr_key, $arr_val) {
+    if(array_key_exists($arr_key, $arr_val)) {
+        return $arr_val[$arr_key];
+    } else {
+        return '';
+    }
 }

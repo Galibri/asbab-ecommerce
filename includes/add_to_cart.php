@@ -36,6 +36,7 @@ class Add_to_cart {
         if(isset($_SESSION['cart'])) {
             return count($_SESSION['cart']);
         }
+        return 0;
 
     }
 

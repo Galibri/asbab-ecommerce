@@ -5,9 +5,10 @@ if(!isset($_SESSION['cart']) || count($_SESSION['cart']) == 0) {
     redirect(site_url());
 }
 
-// $user = get_userinfo_by_username($_SESSION['username']);
+$user = get_userinfo_by_username($_SESSION['username']);
+$userOrderInfo = get_user_order_info();
 
-// $userOrderInfo = get_user_order_info();
+// dd($userOrderInfo);
 
 if(isset($_POST['place_order'])) {
 
@@ -66,13 +67,13 @@ if(isset($_POST['place_order'])) {
         $result = insert_into_database('orders', $data);
         if($result) {
             $insert_id = mysqli_insert_id($conn);
-            unset($_SESSION['cart']);
+            $cart->emptyCart();
             redirect('order_confirmation.php?order-id='. $insert_id);
         } else {
             dd(mysqli_error($conn));
         }
     } else {
-        dd($error);
+        // dd($error);
     }
 
 }
@@ -147,7 +148,7 @@ if(isset($_POST['place_order'])) {
                                 <div class="accordion__body__form">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <p>You are logged in as <strong><?php $_SESSION['username'] ?></strong>. <a href="logout.php?location=checkout.php">Logout?</a></p>
+                                            <p>You are logged in as <strong><?php echo $_SESSION['username'] ?></strong>. <a href="logout.php?location=checkout.php">Logout?</a></p>
                                         </div>
                                     </div>
                                 </div>
@@ -163,49 +164,49 @@ if(isset($_POST['place_order'])) {
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="single-input">
-                                                    <input type="text" placeholder="First name" name="first_name" <?php echo isset($_POST['first_name']) ? $_POST['first_name'] : ''; ?>>
+                                                    <input type="text" placeholder="First name" name="first_name" value="<?php echo isset($_POST['first_name']) ? $_POST['first_name'] : get_value_from_key('first_name', $user); ?>">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="single-input">
-                                                    <input type="text" placeholder="Last name" name="last_name" <?php echo isset($_POST['last_name']) ? $_POST['last_name'] : ''; ?>>
+                                                    <input type="text" placeholder="Last name" name="last_name" value="<?php echo isset($_POST['last_name']) ? $_POST['last_name'] : get_value_from_key('last_name', $user); ?>">
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="single-input mt-0">
                                                     <div class="single-input">
-                                                        <input type="text" class="form-control" name="country" placeholder="Country" name="country" <?php echo isset($_POST['country']) ? $_POST['country'] : ''; ?>>
+                                                        <input type="text" class="form-control" name="country" placeholder="Country" name="country" value="<?php echo isset($_POST['country']) ? $_POST['country'] : get_value_from_key('country', $userOrderInfo); ?>">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="single-input">
-                                                    <input type="text" placeholder="Street Address Line 1" name="address_line_1" <?php echo isset($_POST['address_line_1']) ? $_POST['address_line_1'] : ''; ?>>
+                                                    <input type="text" placeholder="Street Address Line 1" name="address_line_1" vvalue="<?php echo isset($_POST['address_line_1']) ? $_POST['address_line_1'] : get_value_from_key('address_line_1', $userOrderInfo); ?>">
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="single-input">
-                                                    <input type="text" placeholder="Street Address Line 2" name="address_line_2" <?php echo isset($_POST['address_line_2']) ? $_POST['address_line_2'] : ''; ?>>
+                                                    <input type="text" placeholder="Street Address Line 2" name="address_line_2" value="<?php echo isset($_POST['address_line_2']) ? $_POST['address_line_2'] : get_value_from_key('address_line_2', $userOrderInfo); ?>">
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="single-input">
-                                                    <input type="text" placeholder="City" name="city" <?php echo isset($_POST['city']) ? $_POST['city'] : ''; ?>>
+                                                    <input type="text" placeholder="City" name="city" value="<?php echo isset($_POST['city']) ? $_POST['city'] : get_value_from_key('city', $userOrderInfo); ?>">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="single-input">
-                                                    <input type="text" placeholder="State" name="state" <?php echo isset($_POST['state']) ? $_POST['state'] : ''; ?>>
+                                                    <input type="text" placeholder="State" name="state" value="<?php echo isset($_POST['state']) ? $_POST['state'] : get_value_from_key('state', $userOrderInfo); ?>">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="single-input">
-                                                    <input type="text" placeholder="Post code/ zip" name="zip" <?php echo isset($_POST['zip']) ? $_POST['zip'] : ''; ?>>
+                                                    <input type="text" placeholder="Post code/ zip" name="zip" value="<?php echo isset($_POST['zip']) ? $_POST['zip'] : get_value_from_key('zip', $userOrderInfo); ?>">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="single-input">
-                                                    <input type="text" placeholder="Phone number" name="phone" <?php echo isset($_POST['phone']) ? $_POST['phone'] : ''; ?>>
+                                                    <input type="text" placeholder="Phone number" name="phone" value="<?php echo isset($_POST['phone']) ? $_POST['phone'] : get_value_from_key('phone', $user); ?>">
                                                 </div>
                                             </div>
                                         </div>
