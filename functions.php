@@ -344,6 +344,45 @@ function get_user_order_info() {
     return $output;
 }
 
+
+function get_user_orders_info() {
+    global $conn;
+    $output = array();
+
+    if(isset($_SESSION['username'])) {
+
+        $user_id = get_user_id_by_username($_SESSION['username']);
+
+        $sql = "SELECT * FROM orders WHERE user_id='{$user_id}' ORDER BY id DESC";
+        $result = mysqli_query($conn, $sql);
+        if ($result) {
+            while($row = mysqli_fetch_assoc($result)) {
+                $output[] = $row;
+            }
+        }
+    }
+
+    return $output;
+}
+
+function get_user_order_details_info($order_id) {
+    global $conn;
+    $output = array();
+
+    $user_id = get_user_id_by_username($_SESSION['username']);
+
+    $sql = "SELECT * FROM order_details WHERE order_id='{$order_id}' ORDER BY id DESC";
+    $result = mysqli_query($conn, $sql);
+    if ($result) {
+        while($row = mysqli_fetch_assoc($result)) {
+            $output[] = $row;
+        }
+    }
+
+    return $output;
+}
+
+
 function get_user_id_by_username($username) {
     global $conn;
     $output = '';
@@ -365,4 +404,20 @@ function get_value_from_key($arr_key, $arr_val) {
     } else {
         return '';
     }
+}
+
+function authenticate_order_info($order_id, $user_id) {
+    global $conn;
+    $output = false;
+
+    $sql = "SELECT id FROM orders WHERE user_id='{$user_id}' AND id='{$order_id}' LIMIT 1";
+    $result = mysqli_query($conn, $sql);
+    if($result) {
+        $row = mysqli_fetch_assoc($result);
+        if(count($row) > 0) {
+            return true;
+        }
+        return false;
+    }
+    return false;
 }

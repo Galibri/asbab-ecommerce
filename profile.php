@@ -63,6 +63,10 @@ $tab = isset($_GET['tab']) ? sanitize($_GET['tab']) : '';
                             include_once('profile/messages.php');
                             break;
                         
+                        case 'order-details':
+                            include_once('profile/order-details.php');
+                            break;
+                    
                         default:
                             include_once('profile/profile.php');
                             break;
