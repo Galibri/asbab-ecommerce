@@ -421,3 +421,19 @@ function authenticate_order_info($order_id, $user_id) {
     }
     return false;
 }
+
+function get_currency_letter() {
+    return 'USD';
+}
+
+
+function convert_price_in_asking_currency($asking_currency, $order_total) {
+
+    $currency = get_currency_letter();
+    $asking_currency_rate = 82.44;
+
+    $final_price = $order_total * $asking_currency_rate;
+
+    return $final_price;
+
+}

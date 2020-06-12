@@ -102,7 +102,11 @@ if(isset($_POST['place_order'])) {
 
         if($result && $result2) {
             $cart->emptyCart();
-            redirect('order_confirmation.php?order-id='. $insert_id);
+            if($payment_method == 'bKash') {
+                redirect('bkash-payment.php?order-id='. $insert_id);
+            } else {
+                redirect('order_confirmation.php?order-id='. $insert_id);
+            }
         } else {
             dd(mysqli_error($conn));
         }

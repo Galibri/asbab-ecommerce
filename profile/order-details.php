@@ -39,10 +39,10 @@
                     $image = $product_info['image'];
                     // dd($product_info);
                     echo "<tr>";
-                    echo $image != '' ? "<td><img height='50' src='uploads/products/{$image}' alt='{$name}' ></td>" : "<td>No image available</td>";
+                    echo $image != '' ? "<td><img height='50' src='uploads/products/{$image}' alt='{$product_info['name']}' ></td>" : "<td>No image available</td>";
                     echo "<td> {$product_info['name']} </td>";
                     echo "<td> {$order_detail['product_qty']} </td>";
-                    echo "<td> {$order_detail['total_price']} </td>";
+                    echo "<td>" . get_currency() . "{$order_detail['total_price']} </td>";
                     echo "</tr>";
                 }
             ?>
