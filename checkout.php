@@ -5,14 +5,17 @@ if(!isset($_SESSION['cart']) || count($_SESSION['cart']) == 0) {
     redirect(site_url());
 }
 
-$user = get_userinfo_by_username($_SESSION['username']);
+if(isset($_SESSION['username'])) {
+    $user = get_userinfo_by_username($_SESSION['username']);
+} else {
+    $user = array();
+}
 $userOrderInfo = get_user_order_info();
 
 // dd($userOrderInfo);
+$error = array();
 
 if(isset($_POST['place_order'])) {
-
-    $error = array();
 
     // Orders table info
     $address_line_1 = sanitize($_POST['address_line_1']);
@@ -102,11 +105,7 @@ if(isset($_POST['place_order'])) {
 
         if($result && $result2) {
             $cart->emptyCart();
-            if($payment_method == 'bKash') {
-                redirect('bkash-payment.php?order-id='. $insert_id);
-            } else {
-                redirect('order_confirmation.php?order-id='. $insert_id);
-            }
+            redirect('order_confirmation.php?order-id='. $insert_id);
         } else {
             dd(mysqli_error($conn));
         }
@@ -158,24 +157,18 @@ if(isset($_POST['place_order'])) {
                                         </div>
                                         <div class="col-md-5">
                                             <div class="checkout-method__login">
-                                                <form action="#">
-                                                    <h5 class="checkout-method__title">Login</h5>
-                                                    <h5 class="checkout-method__title">Already Registered?</h5>
-                                                    <p class="checkout-method__subtitle">Please login below:</p>
-                                                    <div class="single-input">
-                                                        <label for="user-email">Email Address</label>
-                                                        <input type="email" id="user-email">
-                                                    </div>
-                                                    <div class="single-input">
-                                                        <label for="user-pass">Password</label>
-                                                        <input type="password" id="user-pass">
-                                                    </div>
-                                                    <p class="require">* Required fields</p>
-                                                    <a href="#">Forgot Passwords?</a>
-                                                    <div class="dark-btn">
-                                                        <a href="#">LogIn</a>
-                                                    </div>
-                                                </form>
+                                                <h5 class="checkout-method__title">Login</h5>
+                                                <div class="single-input">
+                                                    <input type="text" id="username" name="username" placeholder="Username">
+                                                    <span class="text-danger"></span>
+                                                </div>
+                                                <div class="single-input">
+                                                    <input type="password" id="password" name="password" placeholder="Password">
+                                                    <span class="text-danger"></span>
+                                                </div>
+                                                <div class="dark-btn">
+                                                    <button type="submit" name="login_submit" id="login_submit" class="btn btn-success fr__btn btn-sm btn-xs">LogIn</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

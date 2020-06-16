@@ -119,10 +119,14 @@
 <script src="assets/js/vendor/jquery-3.2.1.min.js"></script>
 
 <!-- bkash -->
-<script src="https://scripts.sandbox.bka.sh/versions/1.2.0-beta/checkout/bKash-checkout-sandbox.js"></script>
+<!-- <script src="https://scripts.sandbox.bka.sh/versions/1.2.0-beta/checkout/bKash-checkout-sandbox.js"></script> -->
 
 <!-- Bootstrap framework js -->
 <script src="assets/js/bootstrap.min.js"></script>
+
+<!-- Sweetalert 2 -->
+<script src="assets/js//sweetalert2.all.min.js"></script>
+
 <!-- All js plugins included in this file. -->
 <script src="assets/js/plugins.js"></script>
 <script src="assets/js/slick.min.js"></script>

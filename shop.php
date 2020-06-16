@@ -1,8 +1,24 @@
 <?php require_once('./includes/header.php'); ?>
 <?php
-$args = array(
-    'limit' => 100
-);
+if(isset($_GET['orderby']) && isset($_GET['order'])) {
+    $active_pl = ($_GET['orderby'] == 'price' && $_GET['order'] == 'asc') ? "selected='selected'" : "";
+    $active_ph = ($_GET['orderby'] == 'price' && $_GET['order'] == 'desc') ? "selected='selected'" : "";
+    $active_rec = ($_GET['orderby'] == 'id' && $_GET['order'] == 'desc') ? "selected='selected'" : "";
+    
+    $args = array(
+        'limit' => 100,
+        'orderby' => sanitize($_GET['orderby']),
+        'order' => sanitize($_GET['order']),
+    );
+} else {
+    $active_pl = "";
+    $active_ph = "";
+    $active_rec = "";
+
+    $args = array(
+        'limit' => 100
+    );
+}
 $products = get_conditional_rows('products', $args);
 ?>
 <!-- Start Bradcaump area -->
@@ -32,15 +48,12 @@ $products = get_conditional_rows('products', $args);
                 <div class="htc__product__rightidebar">
                     <div class="htc__grid__top">
                         <div class="htc__select__option">
-                            <select class="ht__select">
-                                <option>Show by</option>
-                                <option>Sort by popularity</option>
-                                <option>Sort by average rating</option>
-                                <option>Sort by newness</option>
+                            <select class="ht__select" name="sort_select" id="sort_select" onchange="sort_product_order(this)">
+                                <option>Sort by</option>
+                                <option value="price_asc" <?php echo $active_pl; ?>>Low Price</option>
+                                <option value="price_desc"<?php echo $active_ph; ?>>High Price</option>
+                                <option value="recent" <?php echo $active_rec; ?>>Recent</option>
                             </select>
-                        </div>
-                        <div class="ht__pro__qun">
-                            <span>Showing 1-12 of 1033 products</span>
                         </div>
                         <!-- Start List And Grid View -->
                         <ul class="view__mode" role="tablist">
@@ -65,11 +78,9 @@ $products = get_conditional_rows('products', $args);
                                         </div>
                                         <div class="fr__hover__info">
                                             <ul class="product__action">
-                                                <li><a href="wishlist.html"><i class="icon-heart icons"></i></a></li>
+                                                <li><a href="javascript:void(0)" onclick="manage_wishlist(<?php echo $id; ?>, 'add')"><i class="icon-heart icons"></i></a></li>
 
-                                                <li><a href="cart.html"><i class="icon-handbag icons"></i></a></li>
-
-                                                <li><a href="#"><i class="icon-shuffle icons"></i></a></li>
+                                                <li><a href="javascript:void(0)" onclick="manageCart(<?php echo $id; ?>, 'add')"><i class="icon-handbag icons"></i></a></li>
                                             </ul>
                                         </div>
                                         <div class="fr__product__inner">
@@ -109,7 +120,7 @@ $products = get_conditional_rows('products', $args);
                                                 </ul>
                                                 <p><?php echo $short_desc; ?></p>
                                                 <div class="fr__list__btn">
-                                                    <a class="fr__btn" href="cart.php?id=<?php echo $id ?>">Add To Cart</a>
+                                                    <a class="fr__btn" href="javascript:void(0)" onclick="manageCart(<?php echo $product['id']; ?>, 'add')">Add To Cart</a>
                                                 </div>
                                             </div>
                                         </div>

@@ -4,6 +4,12 @@
 		header("Location: admin/index.php");
 	}
 
+	if(isset($_GET['to'])) {
+		$to = urldecode(sanitize($_GET['to']));
+	} else {
+		$to = '';
+	}
+
 	$login_msg = '';
 
 	if (isset($_POST['login_submit'])) {
@@ -17,10 +23,15 @@
 				if($row['password'] == $password) {
 					$_SESSION['username'] = $username;
 					$_SESSION['role'] = $row['role'];
-					if($row['role'] == 'admin') {
-						redirect('admin/index.php');
+
+					if($to != '' ) {
+						redirect($to);
 					} else {
-						redirect('profile.php');
+						if($row['role'] == 'admin') {
+							redirect('admin/index.php');
+						} else {
+							redirect('profile.php');
+						}
 					}
 					die();
 				} else {
@@ -64,7 +75,7 @@
 
 				<form action="" method="post">
 					<div class="input-group mb-3">
-						<input type="text" class="form-control" name="username" placeholder="Username">
+						<input type="text" class="form-control" name="username" placeholder="Username" autofocus>
 						<div class="input-group-append">
 							<div class="input-group-text">
 								<span class="fas fa-envelope"></span>
@@ -90,6 +101,9 @@
 
 				<p class="mt-4 text-center">
 					<a href="register.php" class="text-center">Register a new account.</a>
+				</p>
+				<p class="mt-4 text-center">
+					<a href="index.php" class="text-center">Back to website</a>
 				</p>
 				<!-- /.login-card-body -->
 			</div>

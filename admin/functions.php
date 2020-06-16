@@ -223,11 +223,15 @@ function insert_into_database($table, $data) {
     }
 }
 
+function get_currency($currency = '$') {
+    return $currency;
+}
+
 function get_all_rows($table) {
     global $conn;
     $output = array();
 
-    $sql = "SELECT * FROM {$table}";
+    $sql = "SELECT * FROM {$table} ORDER BY id DESC";
     $result = mysqli_query($conn, $sql);
     if($result) {
         while($row = mysqli_fetch_assoc($result)) {
@@ -250,6 +254,7 @@ function get_joined_data($columns, $tables, $where) {
     return $output;
 }
 
+
 function update_data_into_database($table, $data, $where) {
     global $conn;
     $cols = array();
@@ -270,4 +275,17 @@ function delete_from_db($table, $where) {
     
     return $result;
 }
-?>
+
+function get_data_by_id($table, $id, $tableId = 'id')
+{
+    global $conn;
+    $output = array();
+    $sql = "SELECT * FROM {$table} WHERE id={$id}";
+    $result = mysqli_query($conn, $sql);
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $output = $row;
+        }
+    }
+    return $output;
+}

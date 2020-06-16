@@ -61,7 +61,8 @@ function get_conditional_rows($table, $args = array())
         'pagination' => false,
         'per_page' => 5,
         'status' => 1,
-        'category_id' => array()
+        'category_id' => array(),
+        'where' => ''
     );
 
     foreach( $defaults as $key => $value ) {
@@ -75,7 +76,11 @@ function get_conditional_rows($table, $args = array())
     if(count($category_id) > 0) {
         $sql = "SELECT * FROM {$table} WHERE status={$status} AND category_id IN (". implode(',', $category_id) .") ORDER BY {$orderby} {$order} LIMIT {$limit}";
     } else {
-        $sql = "SELECT * FROM {$table} WHERE status={$status} ORDER BY {$orderby} {$order} LIMIT {$limit}";
+        if($where != '') {
+            $sql = "SELECT * FROM {$table} WHERE status={$status} AND $where ORDER BY {$orderby} {$order} LIMIT {$limit}";
+        } else {
+            $sql = "SELECT * FROM {$table} WHERE status={$status} ORDER BY {$orderby} {$order} LIMIT {$limit}";
+        }
     }
 
     $result = mysqli_query($conn, $sql);
@@ -174,6 +179,22 @@ function get_data_by_id($table, $id, $tableId = 'id')
     return $output;
 }
 
+function get_bestseller_products_ids($days = 10, $limit = 4) {
+    global $conn;
+    $output = array();
+
+    $todayDate = date('Y-m-d h:i:s');
+    $minusDate = date( "Y-m-d 23:59:59", strtotime( $todayDate . "-{$days} day"));
+
+    $sql = "SELECT product_id, SUM(product_qty) AS TotalQuantity FROM order_details WHERE created_at BETWEEN '$minusDate' AND '$todayDate' GROUP BY product_id ORDER BY SUM(product_qty) DESC LIMIT {$limit}";
+    $result = mysqli_query($conn, $sql);
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $output[] = $row['product_id'];
+        }
+    }
+    return $output;
+}
 
 function get_userinfo_by_username($username)
 {
@@ -266,10 +287,15 @@ function flash_message_type()
 }
 
 
-function is_unique($table, $data, $tableColumn)
+function is_unique($table, $data, $tableColumn, $where = '')
 {
     global $conn;
-    $sql = "SELECT * FROM {$table} WHERE {$tableColumn} = '{$data}'";
+
+    if($where != '') {
+        $sql = "SELECT * FROM {$table} WHERE {$tableColumn} = '{$data}' AND {$where}";
+    } else {
+        $sql = "SELECT * FROM {$table} WHERE {$tableColumn} = '{$data}'";
+    }
     $result = mysqli_query($conn, $sql);
     if ($result) {
         $count = mysqli_num_rows($result);
@@ -422,6 +448,8 @@ function authenticate_order_info($order_id, $user_id) {
     return false;
 }
 
+
+
 function get_currency_letter() {
     return 'USD';
 }
@@ -436,4 +464,26 @@ function convert_price_in_asking_currency($asking_currency, $order_total) {
 
     return $final_price;
 
+}
+
+function delete_from_db($table, $where) {
+    global $conn;
+    $sql = "DELETE FROM {$table} WHERE $where";
+    $result = mysqli_query($conn, $sql);
+    
+    return $result;
+}
+
+function count_wishlist_product() {
+    global $conn;
+    if(isset($_SESSION['username'])) {
+        $profile_id = get_user_id_by_username($_SESSION['username']);
+        $sql = "SELECT id FROM wishlist WHERE user_id='{$profile_id}'";
+        $res = mysqli_query($conn, $sql);
+        $wishlist_products = mysqli_num_rows($res);
+    
+        return $wishlist_products;
+    }
+    return 0;
+    
 }

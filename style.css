@@ -155,7 +155,7 @@
 }
 
 .section__title::before {
-    background: rgba(0, 0, 0, 0) url("images/others/shape/3.png") repeat scroll 0 0 / cover;
+    background: rgba(0, 0, 0, 0) url("assets/images/others/shape/3.png") repeat scroll 0 0 / cover;
     bottom: 0;
     content: "";
     height: 160px;
@@ -1621,7 +1621,7 @@
 }
 
 .title__line--3::before {
-    background: rgba(0, 0, 0, 0) url("images/others/shape/5.png") no-repeat scroll 0 0;
+    background: rgba(0, 0, 0, 0) url("assets/images/others/shape/5.png") no-repeat scroll 0 0;
     bottom: 0;
     content: "";
     height: 4px;
@@ -2038,7 +2038,7 @@ select.ht__select {
     -moz-appearance: none;
     -ms-appearance: none;
     -o-appearance: none;
-    background-image: url("images/icons/select-option.png");
+    background-image: url("assets/images/icons/select-option.png");
     background-position: right 7% center;
     background-size: contain;
     background-repeat: no-repeat;
@@ -2321,7 +2321,7 @@ select.select__size {
     -moz-appearance: none;
     -ms-appearance: none;
     -o-appearance: none;
-    background: rgba(0, 0, 0, 0) url("images/icons/select-option.png") no-repeat scroll 87% 7px / 10px 5px;
+    background: rgba(0, 0, 0, 0) url("assets/images/icons/select-option.png") no-repeat scroll 87% 7px / 10px 5px;
     padding-right: 16px;
 }
 
@@ -4095,4 +4095,22 @@ ul.htc__instagram__posts.owl-carousel li img {
     margin-bottom: 10px;
     font-family: "Poppins";
     cursor: pointer;
+}
+
+.htc__shopping__cart.wishlist {
+    margin-right: 28px;
+}
+
+.htc__shopping__cart a span.wishlist_qty {
+    background: #c43b68;
+    border-radius: 100%;
+    color: #fff;
+    font-size: 9px;
+    height: 17px;
+    line-height: 19px;
+    position: absolute;
+    right: -5px;
+    text-align: center;
+    top: -4px;
+    width: 17px;
 }

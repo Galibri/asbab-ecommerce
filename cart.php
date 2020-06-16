@@ -52,12 +52,20 @@ $products = get_conditional_rows('products', $args);
                                 if(isset($_SESSION['cart']) && count($_SESSION['cart']) > 0) {
                                     $cart_total_price = 0;
 
+                                    // dd($_SESSION['cart']);
+
                                     foreach($_SESSION['cart'] as $id => $value) {
                                         
                                         $product = get_data_by_id('products', $id);
-                                        extract($product);
-                                        $final_price = get_single_product_total_price($selling_price, $price, $value['quantity']);
-                                        $cart_total_price += $final_price;
+                                        if(count($product) > 0) {
+                                            extract($product);
+                                            $final_price = get_single_product_total_price($selling_price, $price, $value['quantity']);
+                                            $cart_total_price += $final_price;
+                                        } else {
+                                            $final_price = 0;
+                                            $cart_total_price = 0;
+                                        }
+                                        
                                         ?>
                                 <tr>
                                     <td class="product-thumbnail">

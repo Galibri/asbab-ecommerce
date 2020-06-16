@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="assets/css/core.css">
     <!-- Theme shortcodes/elements style -->
     <link rel="stylesheet" href="assets/css/shortcode/shortcodes.css">
+
     <!-- Theme main style -->
     <link rel="stylesheet" href="style.css">
     <!-- Responsive css -->
@@ -66,6 +67,12 @@
                                     <div class="header__account">
                                         <a href="<?php echo site_url() . 'profile.php'; ?>"><i class="icon-user icons"></i></a>
                                     </div>
+                                    <?php if(isset($_SESSION['username'])) : ?>
+                                    <div class="htc__shopping__cart wishlist">
+                                        <a class="my_cart__menu" href="<?php echo site_url() . 'profile.php?tab=wishlist'; ?>"><i class="icon-heart icons"></i></a>
+                                        <a href="<?php echo site_url() . 'profile.php?tab=wishlist'; ?>"><span class="wishlist_qty"><?php echo count_wishlist_product(); ?></span></a>
+                                    </div>
+                                    <?php endif; ?>
                                     <div class="htc__shopping__cart">
                                         <a class="my_cart__menu" href="<?php echo get_cart_page_url(); ?>"><i class="icon-handbag icons"></i></a>
                                         <a href="<?php echo get_cart_page_url(); ?>"><span class="htc__qua"><?php echo $cart->totalProducts(); ?></span></a>
@@ -95,8 +102,8 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="search__inner">
-                                <form action="#" method="get">
-                                    <input placeholder="Search here... " type="text">
+                                <form action="search.php" method="get">
+                                    <input placeholder="Search here... " type="text" name="s">
                                     <button type="submit"></button>
                                 </form>
                                 <div class="search__close__btn">

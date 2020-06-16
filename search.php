@@ -1,34 +1,34 @@
 <?php require_once('./includes/header.php'); ?>
 <?php
-if(!isset($_GET['id']) || empty($_GET['id'])) {
-    redirect(site_url());
+if(!isset($_GET['s'])) {
+    redirect('index.php');
+} else {
+    $search = $_GET['s'];
 }
-$cat_id = sanitize($_GET['id']);
 
 if(isset($_GET['orderby']) && isset($_GET['order'])) {
     $active_pl = ($_GET['orderby'] == 'price' && $_GET['order'] == 'asc') ? "selected='selected'" : "";
     $active_ph = ($_GET['orderby'] == 'price' && $_GET['order'] == 'desc') ? "selected='selected'" : "";
     $active_rec = ($_GET['orderby'] == 'id' && $_GET['order'] == 'desc') ? "selected='selected'" : "";
-    
+
     $args = array(
-        'category_id' => array($cat_id),
+        'limit' => 100,
+        'where' => "name LIKE '%{$search}%' OR description LIKE '%{$search}%'",
         'orderby' => sanitize($_GET['orderby']),
         'order' => sanitize($_GET['order']),
     );
+
 } else {
     $active_pl = "";
     $active_ph = "";
     $active_rec = "";
+
     $args = array(
-        'category_id' => array($cat_id)
+        'limit' => 100,
+        'where' => "name LIKE '%{$search}%' OR description LIKE '%{$search}%'",
     );
 }
-// var_dump($args);
-
 $products = get_conditional_rows('products', $args);
-if(count($products) == 0) {
-    redirect(site_url());
-}
 ?>
 <!-- Start Bradcaump area -->
 <div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, .10) url(uploads/theme/breadcrumb.jpg) no-repeat scroll center center / cover ;">
@@ -40,7 +40,7 @@ if(count($products) == 0) {
                         <nav class="bradcaump-inner">
                             <a class="breadcrumb-item" href="<?php echo site_url(); ?>">Home</a>
                             <span class="brd-separetor"><i class="zmdi zmdi-chevron-right"></i></span>
-                            <span class="breadcrumb-item active"><?php echo get_category_name_by_id($cat_id); ?></span>
+                            <span class="breadcrumb-item active">Shop</span>
                         </nav>
                     </div>
                 </div>
@@ -129,7 +129,7 @@ if(count($products) == 0) {
                                                 </ul>
                                                 <p><?php echo $short_desc; ?></p>
                                                 <div class="fr__list__btn">
-                                                    <a class="fr__btn" href="javascript:void(0)" onclick="manageCart(<?php echo $id; ?>, 'add')">Add To Cart</a>
+                                                    <a class="fr__btn" href="javascript:void(0)" onclick="manageCart(<?php echo $product['id']; ?>, 'add')">Add To Cart</a>
                                                 </div>
                                             </div>
                                         </div>

@@ -13,7 +13,7 @@ if(!$conn) {
     die('Database connection failed.');
 }
 
-const WEBSITE_URL_SUFFIX = 'ecommerce/';
+const WEBSITE_URL_SUFFIX = '';
 
 
 

@@ -70,6 +70,16 @@
                         </li>
                     </ul>
                 </li>
+
+                <li class="nav-header">Manage Orders</li>
+
+                <li class="nav-item">
+                    <a href="order.php" class="nav-link">
+                        <i class="nav-icon fas fa-dolly"></i>
+                        <p>Orders</p>
+                    </a>
+                </li>
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

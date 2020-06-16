@@ -1,4 +1,5 @@
 <?php require_once('./includes/header.php'); ?>
+<?php $products_id = get_bestseller_products_ids(); ?>
 
 <?php $products = get_conditional_rows('products', array('limit' => 9)); ?>
 <!-- Start Slider Area -->
@@ -70,29 +71,26 @@
             <div class="row">
                 <div class="product__list clearfix mt--30">
                     <!-- Start Single Category -->
-                    <?php foreach($products as $product) : extract($product) ?>
+                    <?php foreach($products as $product) : ?>
                     <div class="col-md-4 col-lg-3 col-sm-4 col-xs-12">
                         <div class="category">
                             <div class="ht__cat__thumb">
-                                <a href="<?php echo get_permalink('product.php', $id); ?>">
-                                    
-                                    <?php echo $image != '' ? "<img src='uploads/products/{$image}' alt='product images'>" : ""; ?>
+                                <a href="<?php echo get_permalink('product.php', $product['id']); ?>">
+                                    <?php echo $product['image'] != '' ? "<img src='uploads/products/". $product['image'] ."' alt='". $product['name'] ."'>" : ""; ?>
                                 </a>
                             </div>
                             <div class="fr__hover__info">
                                 <ul class="product__action">
-                                    <li><a href="wishlist.html"><i class="icon-heart icons"></i></a></li>
+                                    <li><a href="javascript:void(0)" onclick="manage_wishlist(<?php echo $product['id']; ?>, 'add')"><i class="icon-heart icons"></i></a></li>
 
-                                    <li><a href="cart.html"><i class="icon-handbag icons"></i></a></li>
-
-                                    <li><a href="#"><i class="icon-shuffle icons"></i></a></li>
+                                    <li><a href="javascript:void(0)" onclick="manageCart(<?php echo $product['id']; ?>, 'add')"><i class="icon-handbag icons"></i></a></li>
                                 </ul>
                             </div>
                             <div class="fr__product__inner">
-                                <h4><a href="<?php echo get_permalink('product.php', $id); ?>"><?php echo $name; ?></a></h4>
+                                <h4><a href="<?php echo get_permalink('product.php', $product['id']); ?>"><?php echo $product['name']; ?></a></h4>
                                 <ul class="fr__pro__prize">
-                                    <li class="old__prize"><?php echo get_currency() . $price; ?></li>
-                                    <?php echo $selling_price != 0 ? "<li>" . get_currency() . $selling_price . "</li>" : ""; ?>
+                                    <li class="old__prize"><?php echo get_currency() . $product['price']; ?></li>
+                                    <?php echo $product['selling_price'] != 0 ? "<li>" . get_currency() . $product['selling_price'] . "</li>" : ""; ?>
                                 </ul>
                             </div>
                         </div>
@@ -172,114 +170,37 @@
         </div>
         <div class="row">
             <div class="product__wrap clearfix">
+                <?php
+                    foreach($products_id as $product_id) : 
+                    $best_product = get_data_by_id('products', $product_id);
+                ?>
+                
                 <!-- Start Single Category -->
                 <div class="col-md-4 col-lg-3 col-sm-4 col-xs-12">
                     <div class="category">
                         <div class="ht__cat__thumb">
-                            <a href="product-details.html">
-                                <img src="assets/images/product/9.jpg" alt="product images">
+                            <a href="<?php echo get_permalink('product.php', $best_product['id']); ?>">     
+                                <?php echo $best_product['image'] != '' ? "<img src='uploads/products/". $best_product['image'] ."' alt='product images'>" : ""; ?>
                             </a>
-                        </div>
+                    </div>
                         <div class="fr__hover__info">
                             <ul class="product__action">
-                                <li><a href="wishlist.html"><i class="icon-heart icons"></i></a></li>
+                                <li><a href="javascript:void(0)" onclick="manage_wishlist(<?php echo $best_product['id']; ?>, 'add')"><i class="icon-heart icons"></i></a></li>
 
-                                <li><a href="cart.html"><i class="icon-handbag icons"></i></a></li>
-
-                                <li><a href="#"><i class="icon-shuffle icons"></i></a></li>
+                                <li><a href="javascript:void(0)" onclick="manageCart(<?php echo $best_product['id']; ?>, 'add')"><i class="icon-handbag icons"></i></a></li>
                             </ul>
                         </div>
                         <div class="fr__product__inner">
-                            <h4><a href="product-details.html">Special Wood Basket</a></h4>
+                            <h4><a href="<?php echo get_permalink('product.php', $best_product['id']); ?>"><?php echo $best_product['name']; ?></a></h4>
                             <ul class="fr__pro__prize">
-                                <li class="old__prize">$30.3</li>
-                                <li>$25.9</li>
+                                <li class="old__prize"><?php echo get_currency() . $best_product['price']; ?></li>
+                                <?php echo $best_product['price'] != 0 ? "<li>" . get_currency() . $best_product['price'] . "</li>" : ""; ?>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <!-- End Single Category -->
-                <!-- Start Single Category -->
-                <div class="col-md-4 col-lg-3 col-sm-4 col-xs-12">
-                    <div class="category">
-                        <div class="ht__cat__thumb">
-                            <a href="product-details.html">
-                                <img src="assets/images/product/10.jpg" alt="product images">
-                            </a>
-                        </div>
-                        <div class="fr__hover__info">
-                            <ul class="product__action">
-                                <li><a href="wishlist.html"><i class="icon-heart icons"></i></a></li>
-
-                                <li><a href="cart.html"><i class="icon-handbag icons"></i></a></li>
-
-                                <li><a href="#"><i class="icon-shuffle icons"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="fr__product__inner">
-                            <h4><a href="product-details.html">voluptatem accusantium</a></h4>
-                            <ul class="fr__pro__prize">
-                                <li class="old__prize">$30.3</li>
-                                <li>$25.9</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Single Category -->
-                <!-- Start Single Category -->
-                <div class="col-md-4 col-lg-3 col-sm-4 col-xs-12">
-                    <div class="category">
-                        <div class="ht__cat__thumb">
-                            <a href="product-details.html">
-                                <img src="assets/images/product/11.jpg" alt="product images">
-                            </a>
-                        </div>
-                        <div class="fr__hover__info">
-                            <ul class="product__action">
-                                <li><a href="wishlist.html"><i class="icon-heart icons"></i></a></li>
-
-                                <li><a href="cart.html"><i class="icon-handbag icons"></i></a></li>
-
-                                <li><a href="#"><i class="icon-shuffle icons"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="fr__product__inner">
-                            <h4><a href="product-details.html">Product Dummy Name</a></h4>
-                            <ul class="fr__pro__prize">
-                                <li class="old__prize">$30.3</li>
-                                <li>$25.9</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Single Category -->
-                <!-- Start Single Category -->
-                <div class="col-md-4 col-lg-3 col-sm-4 col-xs-12">
-                    <div class="category">
-                        <div class="ht__cat__thumb">
-                            <a href="product-details.html">
-                                <img src="assets/images/product/12.jpg" alt="product images">
-                            </a>
-                        </div>
-                        <div class="fr__hover__info">
-                            <ul class="product__action">
-                                <li><a href="wishlist.html"><i class="icon-heart icons"></i></a></li>
-
-                                <li><a href="cart.html"><i class="icon-handbag icons"></i></a></li>
-
-                                <li><a href="#"><i class="icon-shuffle icons"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="fr__product__inner">
-                            <h4><a href="product-details.html">Product Title Here </a></h4>
-                            <ul class="fr__pro__prize">
-                                <li class="old__prize">$30.3</li>
-                                <li>$25.9</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Single Category -->
+                <?php endforeach; ?>
             </div>
         </div>
     </div>

@@ -39,8 +39,8 @@ $tab = isset($_GET['tab']) ? sanitize($_GET['tab']) : '';
                     <li class="bg-info <?php echo ($tab == 'orders') ? 'active' : '';?>">
                         <a href="profile.php?tab=orders">Orders</a>
                     </li>
-                    <li class="bg-info <?php echo ($tab == 'message') ? 'active' : '';?>">
-                        <a href="profile.php?tab=message">Messages</a>
+                    <li class="bg-info <?php echo ($tab == 'wishlist') ? 'active' : '';?>">
+                        <a href="profile.php?tab=wishlist">Wishlist</a>
                     </li>
                 </ul>
             </div>
@@ -50,21 +50,17 @@ $tab = isset($_GET['tab']) ? sanitize($_GET['tab']) : '';
                         case 'profile':
                             include_once('profile/profile.php');
                             break;
-                        
                         case 'change-password':
                             include_once('profile/change_password.php');
                             break;
-                        
                         case 'orders':
                             include_once('profile/orders.php');
                             break;
-
-                        case 'messages':
-                            include_once('profile/messages.php');
-                            break;
-                        
                         case 'order-details':
                             include_once('profile/order-details.php');
+                            break;
+                        case 'wishlist':
+                            include_once('profile/wishlist.php');
                             break;
                     
                         default:
