@@ -50,14 +50,14 @@
                     <?php
                         foreach($order_details as $order_detail) {
 
-                            if(count($product_info) == 0) {
-                                $product_info['name'] = 'Unknown product';
+                            if(count($order_detail) == 0) {
+                                $order_detail['name'] = 'Unknown product';
                             }
                             
                             $image = $order_detail['image'];
                             // dd($product_info);
                             echo "<tr>";
-                            echo $image != '' ? "<td><img height='50' src='../uploads/products/{$image}' alt='{$product_info['name']}' ></td>" : "<td>No image available</td>";
+                            echo $image != '' ? "<td><img height='50' src='../uploads/products/{$image}' alt='{$order_detail['name']}' ></td>" : "<td>No image available</td>";
                             echo "<td> {$order_detail['name']} </td>";
                             echo "<td> {$order_detail['product_qty']} </td>";
                             echo "<td>" . get_currency() . "{$order_detail['total_price']} </td>";

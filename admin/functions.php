@@ -289,3 +289,14 @@ function get_data_by_id($table, $id, $tableId = 'id')
     }
     return $output;
 }
+
+function count_item($table) {
+    global $conn;
+    $sql = "SELECT * FROM {$table}";
+    $result = mysqli_query($conn, $sql);
+    if($result) {
+        $count = mysqli_num_rows($result);
+        return $count;
+    }
+    return 0;
+}
